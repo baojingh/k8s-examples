@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: secrect
+metadata:
+  name: gitlab-ci-token
+  namespace: devops
+  labels:
+    app: gitlab-ci-runner
+
