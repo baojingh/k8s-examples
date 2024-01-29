@@ -5,4 +5,7 @@ metadata:
   namespace: devops
   labels:
     app: gitlab-ci-runner
+data:
+  # GR1348941MrK-gqWxGorfDyskdiRh
+  GITLAB_CI_TOKEN: R1IxMzQ4OTQxTXJLLWdxV3hHb3JmRHlza2RpUmgK
 
