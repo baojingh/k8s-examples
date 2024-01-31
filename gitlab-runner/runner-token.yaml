@@ -1,5 +1,5 @@
 apiVersion: v1
-kind: secrect
+kind: Secret
 metadata:
   name: gitlab-ci-token
   namespace: devops
@@ -8,4 +8,3 @@ metadata:
 data:
   # GR1348941MrK-gqWxGorfDyskdiRh
   GITLAB_CI_TOKEN: R1IxMzQ4OTQxTXJLLWdxV3hHb3JmRHlza2RpUmgK
-

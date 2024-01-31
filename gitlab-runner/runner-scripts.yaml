@@ -1,10 +1,4 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  labels:
-    app: gitlab-ci-runner
-  name: gitlab-ci-runner-scripts
-  namespace: devops
 data:
   run.sh: |
     #!/bin/bash
@@ -17,7 +11,13 @@ data:
     trap 'unregister' EXIT HUP INT QUIT PIPE TERM
     echo "Registering runner ${RUNNER_NAME} ..."
     /usr/bin/gitlab-ci-multi-runner register -r ${GITLAB_CI_TOKEN}
-    sed -i 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/' /home/gitlab-runner/.gitlab-runner/config.toml
+    sed -i 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/' /etc/gitlab-runner/config.toml
     echo "Starting runner ${RUNNER_NAME} ..."
     /usr/bin/gitlab-ci-multi-runner run -n ${RUNNER_NAME} &
     wait
+kind: ConfigMap
+metadata:
+  labels:
+    app: gitlab-ci-runner
+  name: gitlab-ci-runner-scripts
+  namespace: devops
