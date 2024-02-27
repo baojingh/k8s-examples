@@ -61,7 +61,8 @@ k create
 
 
 
-
+# 查看pod详情信息
+k describe deploy  nginx1-deployment-55788c949-kmxtm
 ```
 
 
@@ -104,3 +105,8 @@ k top nodes
 
 
 
+
+
+# REF
+
+https://blog.csdn.net/u011095110/article/details/83545350
