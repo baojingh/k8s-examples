@@ -14,18 +14,25 @@ k create deployment mynginx --image nginx --port 80
 # 模拟创建deployment，不执行
 k create deployment nginx-deployment --image=nginx:latest --dry-run=server/client -o yaml
 
+
+
 # 查看到deployment信息
 kg deploy mynginx -owide
-
 # 查看deployment详情信息，yaml展示
  kg deploy mynginx -oyaml
+
+
 
 # 修改deployment信息
 k edit deploy  mynginx 
 
 
+
 # 删除deployment
 k delete deploy nginx-deployment
+
+# 查看deployment详情信息
+k describe deploy  nginx1-deployment
 ```
 
 
@@ -48,6 +55,13 @@ kg pod  -owide --show-labels
 kg pod         --show-labels
 
 
+
+# 创建pod
+k create 
+
+
+
+
 ```
 
 
@@ -55,6 +69,9 @@ kg pod         --show-labels
 # namespace
 
 ```bash
+# namespace
+
+
 # 获取集群列表
 kg ns
 kg namespace
@@ -65,16 +82,19 @@ k create ns hello
 # 删除ns
 k delete ns hello
 
-
 ```
+
+
 
 
 
 # top
 
 ```bash
+# 查看pod资源
 k top pods
 
+# 查看node资源
 k top nodes
 ```
 
