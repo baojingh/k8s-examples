@@ -43,8 +43,39 @@ kg pod nginx-deployment-55888b446c-qdl6x -oyaml
 # 删除pod【如果其对应的deployment没有删除，则此pod被删除后会被马上创建】
 k delete pod nginx-deployment-55888b446c-tpl9z
 
-#
+# 查看pod的label
+kg pod  -owide --show-labels
+kg pod         --show-labels
 
+
+```
+
+
+
+# namespace
+
+```bash
+# 获取集群列表
+kg ns
+kg namespace
+
+# 创建ns
+k create ns hello
+
+# 删除ns
+k delete ns hello
+
+
+```
+
+
+
+# top
+
+```bash
+k top pods
+
+k top nodes
 ```
 
 
