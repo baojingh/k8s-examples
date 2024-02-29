@@ -115,6 +115,28 @@ k top nodes
 
 
 
+# api-versions
+
+```bash
+# API组名/版本号
+k api-versions
+```
+
+
+
+# configMap
+
+```bash
+# 查看configmap列表
+kg cm
+
+
+# 查看cm详情信息
+k get cm kube-root-ca.crt -oyaml
+```
+
+
+
 
 
 
