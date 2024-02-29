@@ -2,6 +2,36 @@
 
 
 
+# pod
+
+```bash
+# 查看pod信息
+kg pod nginx-deployment-55888b446c-qdl6x 
+kg pod  nginx-deployment-55888b446c-tpl9z -owide
+kg pod nginx-deployment-55888b446c-qdl6x -oyaml
+
+# 删除pod【如果其对应的deployment没有删除，则此pod被删除后会被马上创建】
+k delete pod nginx-deployment-55888b446c-tpl9z
+
+# 查看pod的label
+kg pod  -owide --show-labels
+kg pod         --show-labels
+
+
+
+# 创建pod
+k create 
+
+
+
+# 查看pod详情信息
+k describe deploy  nginx1-deployment-55788c949-kmxtm
+```
+
+
+
+
+
 # deployment
 
 
@@ -39,31 +69,15 @@ k describe deploy  nginx1-deployment
 
 
 
-# pod
+# Service
 
-```bash
-# 查看pod信息
-kg pod nginx-deployment-55888b446c-qdl6x 
-kg pod  nginx-deployment-55888b446c-tpl9z -owide
-kg pod nginx-deployment-55888b446c-qdl6x -oyaml
-
-# 删除pod【如果其对应的deployment没有删除，则此pod被删除后会被马上创建】
-k delete pod nginx-deployment-55888b446c-tpl9z
-
-# 查看pod的label
-kg pod  -owide --show-labels
-kg pod         --show-labels
-
-
-
-# 创建pod
-k create 
-
-
-
-# 查看pod详情信息
-k describe deploy  nginx1-deployment-55788c949-kmxtm
 ```
+
+```
+
+
+
+
 
 
 
