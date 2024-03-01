@@ -101,11 +101,10 @@ k describe deploy  nginx1-deployment
 
 # Service
 
+```bash
+# 创建service，通过服务公开端口；nginx-app是deployment名称
+kubectl expose deployment nginx-app --port=80 --name=nginx-http
 ```
-
-```
-
-
 
 
 
@@ -204,9 +203,31 @@ k delete cronjob hello
 
 
 
+# 集群信息
+
+```bash
+k cluster-info
+```
 
 
 
+# explain
+
+```bash
+kubectl explain pods.spec.containers
+```
+
+
+
+
+
+# 练手项目
+
+https://xie.infoq.cn/article/27f5f6250a3033ea09c337989
+
+https://www.rondochen.com/run-a-demo-on-k8s/#mall2%E9%83%A8%E7%BD%B2%E7%BB%93%E6%9E%9C
+
+https://github.com/kubernetes/examples?tab=readme-ov-file
 
 
 
@@ -215,3 +236,4 @@ k delete cronjob hello
 https://blog.csdn.net/u011095110/article/details/83545350
 
 https://kubernetes.io/zh-cn/docs/reference/kubectl/quick-reference/#kubectl-context-and-configuration
+
