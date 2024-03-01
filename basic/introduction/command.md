@@ -23,10 +23,40 @@ kg pod         --show-labels
 k create 
 
 
-
 # 查看pod详情信息
 k describe deploy  nginx1-deployment-55788c949-kmxtm
+
+#k8s v1.18之前创建pod的方式，只有pod，不存在depolyment
+kubectl run --image=nginx nginx
+
 ```
+
+
+
+基于yaml文件创建pod
+
+```bash
+# 创建pod
+k apply -f busybox.yaml
+```
+
+
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-sleep
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    args:
+    - sleep
+    - "1000000"
+```
+
+
 
 
 
@@ -137,6 +167,43 @@ k get cm kube-root-ca.crt -oyaml
 
 
 
+# contexts
+
+```bash
+
+# context列表
+ k config get-contexts
+ 
+ # 当前的context名称
+  k config current-context
+  
+  # 设置默认的上下文为 my-cluster-name
+  kubectl config use-context my-cluster-name
+  
+  
+```
+
+
+
+# job
+
+```bash
+# 创建一个打印 “Hello World” 的 Job，创建的是pod，查看具体输出： k logs -f  hello-dzbt7
+k create job hello --image=busybox -- echo "hello"
+
+# 删除job
+ k delete job hello
+
+# 创建一个打印 “Hello World” 间隔 1 分钟的 CronJob；每分钟创建一个pod，查看pod日志即可看到输出。
+ k create cronjob --image=busybox  --schedule="*/1 * * * *" -- echo "hello"
+
+# 删除cronjob
+k delete cronjob hello
+
+```
+
+
+
 
 
 
@@ -146,3 +213,5 @@ k get cm kube-root-ca.crt -oyaml
 # REF
 
 https://blog.csdn.net/u011095110/article/details/83545350
+
+https://kubernetes.io/zh-cn/docs/reference/kubectl/quick-reference/#kubectl-context-and-configuration
