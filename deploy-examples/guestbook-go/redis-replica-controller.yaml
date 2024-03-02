@@ -4,23 +4,21 @@ metadata:
   name: redis-replica
   labels:
     app: redis
-    role: replicas
+    role: replica
 spec:
   replicas: 2
   selector:
     app: redis
     role: replica
   template:
-    metadata: 
+    metadata:
       labels:
         app: redis
         role: replica
     spec:
       containers:
-        - name: redis-replica
-          image: mysql
-          ports:  
-            - name: redis-server
-              containerPort: 6379
-      imagePullSecrets:
-        - name: harbor-secret
+      - name: redis-replica
+        image: k8s.mirror.nju.edu.cn/redis-slave:v2
+        ports:
+        - name: redis-server
+          containerPort: 6379
