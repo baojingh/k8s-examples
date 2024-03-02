@@ -18,8 +18,9 @@ spec:
     spec:
       containers:
         - name: redis-replica
-          image: registry.k8s.io/redis-slave:v2
+          image: mysql
           ports:  
             - name: redis-server
               containerPort: 6379
-
+      imagePullSecrets:
+        - name: harbor-secret
