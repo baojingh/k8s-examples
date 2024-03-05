@@ -1,5 +1,9 @@
 FROM golang:1.19 build_sales-api
 ENV CGO_ENABLE 0
+ARG BUILD_ARG
+
+
+COPY . /service
 
 
 
