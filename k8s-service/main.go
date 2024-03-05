@@ -1,8 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+)
+
+var build = "develop"
 
 func main() {
-	fmt.Println("hello")
-	fmt.Println("")
+	log.Println("starting service")
+	defer log.Println("ended service")
+
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
+	<-shutdown
+
+	log.Println("service is ending")
+
 }
