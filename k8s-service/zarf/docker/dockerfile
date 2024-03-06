@@ -1,12 +1,22 @@
-FROM golang:1.19 build_sales-api
+FROM golang:1.19 as build_sales-api
 ENV CGO_ENABLE 0
-ARG BUILD_ARG
-
-
-COPY main.go /service
-
+ARG BUILD_REF
+COPY . /service
+RUN ls -lh
 WORKDIR /service
-RUN go build -ldfalgs "-X main.build=${BUILD_ARG}"
+RUN go build -ldflags "-X main.build=${BUILD_REF}" -o service
 
+FROM alpine:3.14
+ARG BUILD_REF
+ARG BUILD_DATE
+COPY --from=build_sales-api /service /service/service
+
+WORKDIR /service/service
+
+CMD ["./service"]
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.title="sales-api" \
+      org.opencontainers.image.revision="${BUILD_REF}"
 
 
