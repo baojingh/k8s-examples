@@ -1,34 +1,42 @@
 # 基础知识
 
 ### metadata
-spec.selector.matchlabels
-这3个字段，共同构成了一个label selector，也就是标签选择器，
-这里我们可以看到matchlabels字段后面跟的值是app：nginx。这是一个k-v结构，带有这个k-v结构的Pod对象，
-将会被这个Deployment管理
+在 Kubernetes 配置文件中，metadata.labels 和 spec.selector 通常在一起使用，。他们起着不同的作用：
+metadata.labels：这些标签（labels）附加在你创建的对象（例如 Pod、Service、或 Deployment）上。标签是键值对，可以被用来组织和分类这些对象。
+spec.selector：这个字段定义了如何找到你想要该 Kubernetes 对象（例如 Service 或 Deployment）管理的 Pod。
+Selector 包含一组键值对，只有那些标签与 selector 完全匹配的 Pod 才会被选中。
 
+所以，metadata.labels 是你给你的 Kubernetes 对象打的标签，而 spec.selector 是你定义的规则，告诉 Kubernetes 去找哪些 Pod。
+
+以下是一个 Deployment 的配置文件示例，用于演示这两个字段的使用：
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: my-deployment
+  labels:
+    app: my-app-deployment-label
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: nginx
-  replicas: 2
+      app: my-app
   template:
     metadata:
       labels:
-        app: nginx
+        app: my-app
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.7.9
-          ports:
-            - containerPort: 80
-
+        - name: my-redis
+          image: redis
 ```
+在这个示例中，我们创建了一个名为 “my-deployment” 的 Deployment，它的标签为 {app: "my-app-deployment-label"}。
+在 spec.selector.matchLabels 中，我们定义了 {app: "my-app"}，
+这意味着这个 Deployment 将管理所有标签为 {app: "my-app"} 的 Pod。
 
+在 spec.template.metadata.labels 中，我们定义了这个 Deployment 创建的 Pod 的标签也为 {app: "my-app"}。
+
+因此，这个 Deployment 将管理所有标签为 {app: "my-app"} 的 Pod，并且它创建的所有新 Pod 的标签都将为 {app: "my-app"}。
 
 
 
