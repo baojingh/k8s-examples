@@ -40,6 +40,40 @@ spec:
 
 
 
+```yaml
+$ kgd    --show-labels
+NAME            READY   UP-TO-DATE   AVAILABLE   AGE     LABELS
+my-deployment   3/3     3            3           13m     app=my-app-deployment-label
+
+$ kgp    --show-labels
+NAME                            READY   STATUS             RESTARTS        AGE   LABELS
+my-deployment-8c944cd96-4ffhr   1/1     Running            0               14m   app=my-app,pod-template-hash=8c944cd96
+my-deployment-8c944cd96-4p858   1/1     Running            0               14m   app=my-app,pod-template-hash=8c944cd96
+my-deployment-8c944cd96-fn2rt   1/1     Running            0               14m   app=my-app,pod-template-hash=8c944cd96
+```
+
+
+
+```yaml
+$ kde deploy my-deployment
+Name:                   my-deployment
+Namespace:              default
+CreationTimestamp:      Thu, 07 Mar 2024 09:28:28 +0800
+Labels:                 app=my-app-deployment-label
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=my-app
+
+....
+
+...
+```
+
+
+
+
+
+
+
 ### Finalizer
 一个常见的 Finalizer 的例子是 kubernetes.io/pv-protection， 
 它用来防止意外删除 PersistentVolume 对象。 当一个 PersistentVolume 对象被 Pod 使用时，
