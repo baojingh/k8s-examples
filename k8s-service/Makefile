@@ -7,6 +7,8 @@ run:
 	go run main.go
 
 service:
+	# docker rmi $(docker images | grep none | awk '{print $3}')
+	
 	docker build \
 		-f zarf/docker/dockerfile \
 		-t service-amd64:$(VERSION) \
@@ -52,3 +54,9 @@ kind-logs:
 
 kind-restart:
 	kubectl rollout restart deployment service-pod
+
+kind-des:
+	kubectl describe pod -l app=service
+
+
+kind-update: all kind-load kind-restart
