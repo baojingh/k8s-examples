@@ -46,11 +46,10 @@ kind-load:
 				--name ${KIND_CLUSTER}
 
 kind-apply:
-	cat zarf/k8s/base/service-pod/base-service.yaml | kubectl apply -f -
+	kustomize build zarf/k8s/kind/service-pod/ | kubectl apply -f -
 
 kind-logs:
-	kubectl logs -l app=service --all-containers=true \
-			-f --tail=100
+	kubectl logs -l app=service --all-containers=true -f --tail=100
 
 kind-restart:
 	kubectl rollout restart deployment service-pod
@@ -60,3 +59,11 @@ kind-des:
 
 
 kind-update: all kind-load kind-restart
+
+kind-update-apply: all kind-load kind-apply
+
+
+# ==============================================================================
+
+tidy:
+	go mod tidy
