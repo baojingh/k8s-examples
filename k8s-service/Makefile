@@ -17,3 +17,15 @@ dev-status:
 	kubectl get pod 		-owide
 	kubectl get deployment 	-owide
 	kubectl get svc 		-owide
+
+# ==============================================================================
+# Running from within k8s/kind
+
+KIND_CLUSTER := ardan-starter-cluster
+
+kind-up:
+	kind create cluster --name ${KIND_CLUSTER}
+	kubectl config set-context --current --namespace=sales-system
+
+kind-down:
+	kind delete cluster --name ${KIND_CLUSTER}
