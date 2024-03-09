@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -14,7 +15,9 @@ var build = "develop"
 
 func main() {
 
-	maxprocs.Set()
+	if _, err := maxprocs.Set(); err != nil {
+		fmt.Errorf("maxprocs %w", err)
+	}
 
 	g := runtime.GOMAXPROCS(0)
 
