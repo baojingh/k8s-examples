@@ -3,19 +3,18 @@ ENV CGO_ENABLE 0
 ARG BUILD_REF
 COPY . /service
 RUN ls -lh
-WORKDIR /service
+WORKDIR /service/app/services/sales-api
 RUN      go env -w GO111MODULE=on \
       && go env -w GOPROXY=https://goproxy.cn,direct \
-      && go build -ldflags "-X main.build=${BUILD_REF}" -o service
+      && go build -ldflags "-X main.build=${BUILD_REF}" -o sales-api
 
 FROM alpine:3.14
 ARG BUILD_REF
 ARG BUILD_DATE
 WORKDIR /service
-COPY --from=build_sales-api /service/service ./
+COPY --from=build_sales-api /service/app/services/sales-api ./
 
-
-CMD ["./service"]
+CMD ["./sales-api"]
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="sales-api" \

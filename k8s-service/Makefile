@@ -4,19 +4,17 @@ VERSION := 1.0
 all: service 
 
 run:
-	go run main.go
+	go run app/services/sales-api/main.go
 
 service:
 	# docker rmi $(docker images | grep none | awk '{print $3}')
 	
 	docker build \
-		-f zarf/docker/dockerfile \
-		-t service-amd64:$(VERSION) \
+		-f zarf/docker/dockerfile.sales-api \
+		-t sales-api-amd64:$(VERSION) \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
-
-
 
 # ==============================================================================
 # Running from within k8s/kind
@@ -42,20 +40,20 @@ kind-status:
 
 # the docker iamge in host cannot be found by k8s(kind), load is must
 kind-load:
-	kind load docker-image service-amd64:${VERSION} \
+	kind load docker-image sales-api-amd64:${VERSION} \
 				--name ${KIND_CLUSTER}
 
 kind-apply:
 	kustomize build zarf/k8s/kind/service-pod/ | kubectl apply -f -
 
 kind-logs:
-	kubectl logs -l app=service --all-containers=true -f --tail=100
+	kubectl logs -l app=sales --all-containers=true -f --tail=100
 
 kind-restart:
-	kubectl rollout restart deployment service-pod
+	kubectl rollout restart deployment sales-pod
 
 kind-des:
-	kubectl describe pod -l app=service
+	kubectl describe pod -l app=sales
 
 
 kind-update: all kind-load kind-restart
