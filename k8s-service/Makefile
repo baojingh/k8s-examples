@@ -1,12 +1,13 @@
 SHELL := /bin/bash
 VERSION := 1.0
+NAMESPACE := sales-system
 
 all: service 
 
 run:
 	go run app/services/sales-api/main.go
 
-service:
+sales:
 	# docker rmi $(docker images | grep none | awk '{print $3}')
 	
 	docker build \
@@ -25,7 +26,7 @@ kind-up:
 			--name ${KIND_CLUSTER} \
 			--config zarf/k8s/kind/kind-config.yaml
 	kubectl config set-context --current \
-					--namespace=service-system
+					--namespace=${NAMESPACE}
 
 kind-down:
 	kind delete cluster \
@@ -44,7 +45,7 @@ kind-load:
 				--name ${KIND_CLUSTER}
 
 kind-apply:
-	kustomize build zarf/k8s/kind/service-pod/ | kubectl apply -f -
+	kustomize build zarf/k8s/kind/sales-pod/ | kubectl apply -f -
 
 kind-logs:
 	kubectl logs -l app=sales --all-containers=true -f --tail=100
