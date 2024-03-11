@@ -1,8 +1,8 @@
 SHELL := /bin/bash
-VERSION := 1.0
+VERSION := 1.3
 NAMESPACE := sales-system
 
-all: service 
+all: sales 
 
 run:
 	go run app/services/sales-api/main.go
@@ -41,6 +41,7 @@ kind-status:
 
 # the docker iamge in host cannot be found by k8s(kind), load is must
 kind-load:
+	cd zarf/k8s/kind/sales-pod; kustomize edit set image sales-api-image=sales-api-amd64:${VERSION}
 	kind load docker-image sales-api-amd64:${VERSION} \
 				--name ${KIND_CLUSTER}
 
