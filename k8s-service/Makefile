@@ -20,7 +20,7 @@ sales:
 # ==============================================================================
 # Running from within k8s/kind
 KIND_CLUSTER := ardan-starter-cluster
- 
+
 kind-up:
 	kind create cluster  \
 			--name ${KIND_CLUSTER} \
