@@ -2,17 +2,16 @@ FROM golang:1.19 as build_sales-api
 ENV CGO_ENABLE 0
 ARG BUILD_REF
 COPY . /service
-RUN ls -lh
 WORKDIR /service/app/services/sales-api
 RUN      go env -w GO111MODULE=on \
       && go env -w GOPROXY=https://goproxy.cn,direct \
-      && go build -ldflags "-X main.build=${BUILD_REF}" -o sales-api
+      && CGO_ENABLED=0 go build -ldflags "-X main.build=${BUILD_REF}" -o sales-api
 
 FROM alpine:3.14
 ARG BUILD_REF
 ARG BUILD_DATE
+COPY --from=build_sales-api /service/app/services/sales-api/sales-api /service/sales-api
 WORKDIR /service
-COPY --from=build_sales-api /service/app/services/sales-api ./
 
 CMD ["./sales-api"]
 
