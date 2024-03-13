@@ -21,29 +21,27 @@ func main() {
 		os.Exit(1)
 	}
 	defer log.Sync()
+
 	if err := run(log); err != nil {
-		log.ErrorW("startup", "ERROR", err)
+		log.Errorw("startup", "ERROR", err)
 		os.Exit(1)
 	}
+
+}
+
+func run(log *zap.SugaredLogger) error {
 
 	if _, err := maxprocs.Set(); err != nil {
 		fmt.Errorf("maxprocs %w", err)
 	}
-
 	g := runtime.GOMAXPROCS(0)
-
-	log.Printf("starting service, CPU [%d]", g)
-	defer log.Println("ended service")
+	log.Infow("startup", "GOMAXPROCS", g)
 
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
 	<-shutdown
 
-	log.Println("service is ending")
-
-}
-
-func run(log *zap.SugaredLogger) error {
+	log.Info("service is ending")
 	return nil
 }
 

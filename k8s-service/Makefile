@@ -5,7 +5,7 @@ NAMESPACE := sales-system
 all: sales 
 
 run:
-	go run app/services/sales-api/main.go
+	go run app/services/sales-api/main.go | go run app/tooling/logfmt/main.go
 
 sales:
 	# docker rmi $(docker images | grep none | awk '{print $3}')
