@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"k8s-service/app/services/sales-api/handlers"
+	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
@@ -71,13 +74,58 @@ func run(log *zap.SugaredLogger) error {
 	log.Infow("startup", "config", out)
 
 	// =========================================================================
-	// Initialize authentication support
+	// Start Debug Service
+	log.Infow("startup", "status", "debug router started", "host", cfg.Web.DebugHost)
 
+	// The Debug function returns a mux to listen and serve on for all the debug
+	// related endpoints. This include the standard library endpoints.
+
+	// Construct the mux for the debug calls.
+	debugMux := handlers.DebugMux(build, log, nil)
+	go func() {
+		if err := http.ListenAndServe(cfg.Web.DebugHost, debugMux); err != nil {
+			log.Errorw("shutdown", "status", "debug router closed", "host", cfg.Web.DebugHost, "ERROR", err)
+		}
+	}()
+	log.Infow("startup", "status", "initializing API support")
+
+	// Make a channel to listen for an interrupt or terminate signal from the OS.
+	// Use a buffered channel because the signal package requires it.
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
-	<-shutdown
 
-	log.Info("service is ending")
+	// Construct a server to service the requests against the mux.
+	api := http.Server{
+		Addr:         cfg.Web.APIHost,
+		Handler:      nil,
+		ReadTimeout:  cfg.Web.ReadTimeout,
+		WriteTimeout: cfg.Web.WriteTimeout,
+		IdleTimeout:  cfg.Web.IdleTimeout,
+		ErrorLog:     zap.NewStdLog(log.Desugar()),
+	}
+	serverErrors := make(chan error, 1)
+	go func() {
+		log.Infow("startup", "status", "api router started", "host", api.Addr)
+		serverErrors <- api.ListenAndServe()
+	}()
+
+	// =========================================================================
+	// Shutdown
+
+	// Blocking main and waiting for shutdown.
+	select {
+	case err := <-serverErrors:
+		return fmt.Errorf("server error: %w", err)
+	case sig := <-shutdown:
+		log.Infow("shutdown", "status", "shutdown started", "signal", sig)
+		defer log.Infow("shutdown", "status", "shutdown complete", "signal", sig)
+		ctx, cancal := context.WithTimeout(context.Background(), cfg.Web.ShutdownTimeout)
+		defer cancal()
+		if err := api.Shutdown(ctx); err != nil {
+			api.Close()
+			return fmt.Errorf("could not shutdown server gracefully: %w", err)
+		}
+	}
 	return nil
 }
 
