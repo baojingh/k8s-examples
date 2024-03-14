@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"k8s-service/app/services/sales-api/handlers"
 	"net/http"
@@ -51,10 +52,10 @@ func run(log *zap.SugaredLogger) error {
 		Web struct {
 			APIHost         string        `conf:"default:0.0.0.0:3000"`
 			DebugHost       string        `conf:"default:0.0.0.0:4000"`
-			ReadTimeout     time.Duration `conf:"default:5s`
-			WriteTimeout    time.Duration `conf:"default:10s`
-			IdleTimeout     time.Duration `conf:"default:120s`
-			ShutdownTimeout time.Duration `conf:"default:20s`
+			ReadTimeout     time.Duration `conf:"default:5s"`
+			WriteTimeout    time.Duration `conf:"default:10s"`
+			IdleTimeout     time.Duration `conf:"default:120s"`
+			ShutdownTimeout time.Duration `conf:"default:20s"`
 		}
 	}{
 		Version: conf.Version{
@@ -62,6 +63,17 @@ func run(log *zap.SugaredLogger) error {
 			Desc:  "copyright is reserved",
 		},
 	}
+
+	const prefix = "SALES"
+	help, err := conf.Parse(prefix, &cfg)
+	if err != nil {
+		if errors.Is(err, conf.ErrHelpWanted) {
+			fmt.Println(help)
+			return nil
+		}
+		return fmt.Errorf("parsing config: %w", err)
+	}
+
 	// =========================================================================
 	// App Starting
 	log.Infow("starting service", "version", build)
@@ -72,6 +84,8 @@ func run(log *zap.SugaredLogger) error {
 		return fmt.Errorf("generating conf out: %w", err)
 	}
 	log.Infow("startup", "config", out)
+
+	// expvar.NewString("build").Set(build)
 
 	// =========================================================================
 	// Start Debug Service

@@ -40,20 +40,19 @@ func main() {
 		"caller":"sales-api/main.go:38","msg":"startup",
 		"service":"SALES-API","GOMAXPROCS":8}
 		**/
-		traceID := "00000000-0000-0000-0000-000000000000"
+		// traceID := "00000000-0000-0000-0000-000000000000"
 		b.Reset()
-		b.WriteString(fmt.Sprintf("%s: %s: %s: %s: %s: %s: ",
+		b.WriteString(fmt.Sprintf("%s %s %s %s %s ",
 			m["service"],
 			m["ts"],
 			m["level"],
-			traceID,
 			m["caller"],
 			m["msg"],
 		))
 
 		for k, v := range m {
 			switch k {
-			case "service", "ts", "level", "traceid", "caller", "msg":
+			case "service", "ts", "level", "caller", "msg":
 				continue
 			}
 			b.WriteString(fmt.Sprintf("%s[%v]: ", k, v))
