@@ -65,6 +65,7 @@ func run(log *zap.SugaredLogger) error {
 	}
 
 	const prefix = "SALES"
+	// take  cfg effect
 	help, err := conf.Parse(prefix, &cfg)
 	if err != nil {
 		if errors.Is(err, conf.ErrHelpWanted) {
@@ -156,5 +157,4 @@ func initLogger(service string) (*zap.SugaredLogger, error) {
 		return nil, err
 	}
 	return log.Sugar(), nil
-
 }

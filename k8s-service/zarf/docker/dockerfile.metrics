@@ -1,0 +1,22 @@
+FROM golang:1.19 as build_metrics
+ENV CGO_ENABLE 0
+ARG BUILD_REF
+COPY . /service
+WORKDIR /service/app/services/metrics
+RUN      go env -w GO111MODULE=on \
+      && go env -w GOPROXY=https://goproxy.cn,direct \
+      && CGO_ENABLED=0 go build -ldflags "-X main.build=${BUILD_REF}" -o metrics
+
+FROM alpine:3.14
+ARG BUILD_REF
+ARG BUILD_DATE
+COPY --from=build_metrics /service/app/services/metrics/metrics /service/metrics
+WORKDIR /metrics
+
+CMD ["./metrics"]
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.title="metrics" \
+      org.opencontainers.image.revision="${BUILD_REF}"
+
+

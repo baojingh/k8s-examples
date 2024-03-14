@@ -2,7 +2,7 @@ SHELL := /bin/bash
 VERSION := 1.0
 NAMESPACE := sales-system
 
-all: sales 
+all: sales metrics
 
 run:
 	go run app/services/sales-api/main.go | go run app/tooling/logfmt/main.go
@@ -13,6 +13,14 @@ sales:
 	docker build \
 		-f zarf/docker/dockerfile.sales-api \
 		-t sales-api-amd64:$(VERSION) \
+		--build-arg BUILD_REF=$(VERSION) \
+		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		.
+
+metrics:
+	docker build \
+		-f zarf/docker/dockerfile.metrics \
+		-t metrics-amd64:$(VERSION) \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
