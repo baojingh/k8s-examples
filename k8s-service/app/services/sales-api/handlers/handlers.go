@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"expvar"
 	"k8s-service/app/services/sales-api/handlers/debug/checkgrp"
 	"net/http"
 	"net/http/pprof"
@@ -31,9 +32,14 @@ func DebugMux(build string, log *zap.SugaredLogger, db *sqlx.DB) http.Handler {
 // handler into our service without us knowing it.
 func DebugStandardLibraryMux() *http.ServeMux {
 	mux := http.NewServeMux()
+
+	// Register all the standard library debug endpoints.
 	mux.HandleFunc("/debug/pprof/", pprof.Index)
 	mux.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
 	mux.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	mux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	mux.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	mux.Handle("/debug/vars", expvar.Handler())
 
 	return mux
 }
