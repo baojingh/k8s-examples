@@ -21,7 +21,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - k8s-w-1
+          - VM-4-2-ubuntu
 ---
 
 apiVersion: v1
@@ -47,7 +47,7 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - k8s-w-1
+          - VM-4-2-ubuntu
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -72,4 +72,5 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - k8s-w-1
+          - VM-4-2-ubuntu
+

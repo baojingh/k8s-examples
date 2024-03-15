@@ -91,7 +91,7 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - k8s-w-1
+                - VM-4-2-ubuntu
       initContainers:
       - name: init-mysql
         image: mysql:5.7-debian
