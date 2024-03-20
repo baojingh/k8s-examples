@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-test
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2G
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/tmp/pv-test-1"
