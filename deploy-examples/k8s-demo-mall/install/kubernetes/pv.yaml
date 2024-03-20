@@ -13,7 +13,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   local:
-    path: "/data/k8s-volume-1"
+    path: "/data/tmp/k8s-volume-1"
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -39,7 +39,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   local:
-    path: "/data/k8s-volume-2"
+    path: "/data/tmp/k8s-volume-2"
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -64,7 +64,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   local:
-    path: "/data/k8s-volume-3"
+    path: "/data/tmp/k8s-volume-3"
   nodeAffinity:
     required:
       nodeSelectorTerms:
