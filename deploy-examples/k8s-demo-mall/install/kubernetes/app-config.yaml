@@ -130,6 +130,13 @@ data:
   DB_HOST_READ: mysql-read.db
   DB_USERNAME: xyzshop_user
   DB_DATABASE: xyzshop
+  passwd.cnf: |
+    [mysql]
+    user=root
+    password=P@ssword1234_
+    [mysqladmin]
+    user=root
+    password=P@ssword1234_
 ---
 apiVersion: v1
 kind: Secret
