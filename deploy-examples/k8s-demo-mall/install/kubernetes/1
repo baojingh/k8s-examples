@@ -14,7 +14,7 @@ spec:
     app: mysql
 
 ---
-apiVersion: apps/v1
+apiVersion: v1
 kind: Deployment
 metadata:
   name: mysql
@@ -39,10 +39,6 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
-        volumeMounts:
-        - name: app-config
-          mountPath: /var/passwd.cnf
-          subPath: var/passwd.cnf
         resources:
           limits:
             cpu: 500m
@@ -52,23 +48,13 @@ spec:
             memory: 128Mi
         livenessProbe:
           exec:
-            command: ["mysqladmin", "--defaults-extra-file=/var/passwd.cnf", "ping"]
+            command: ["mysqladmin", "ping"]
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           exec:
-            command: ["mysql", "--defaults-extra-file=/var/passwd.cnf", "-h", "127.0.0.1", "-e", "SELECT 1"]
+            command: ["mysql", "-h", "127.0.0.1", "-uroot", "-pP@ssword1234_", "-e", "SELECT 1"]
           initialDelaySeconds: 30
           periodSeconds: 5
           timeoutSeconds: 10
-      volumes:
-      - name: app-config
-        configMap:
-          name: app-config
-          items:
-          - key: passwd.cnf
-            path: var/passwd.cnf
-      - name: conf
-        emptyDir: {}
-
