@@ -84,10 +84,3 @@ spec:
         ports:
         - containerPort: 7000
           protocol: TCP
-        resources:
-          limits:
-            cpu: 200m
-            memory: 128Mi
-          requests:
-            cpu: 200m
-            memory: 128Mi

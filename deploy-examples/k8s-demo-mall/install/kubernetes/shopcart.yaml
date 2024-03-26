@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: shopcart
-        image: rondochen/shopcart:1.0
+        image: registry.gitlab.com/localdetector/public-docker-registry/k8s-examples/shopcart:1.0
         imagePullPolicy: Always
         env:
           - name: REDIS_ADDRESS
@@ -73,10 +73,3 @@ spec:
             port: 6000
           initialDelaySeconds: 1
           periodSeconds: 10
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-          requests:
-            cpu: 200m
-            memory: 256Mi

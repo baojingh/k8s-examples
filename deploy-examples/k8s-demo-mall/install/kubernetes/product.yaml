@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: product
-        image: rondochen/product:1.0
+        image: registry.gitlab.com/localdetector/public-docker-registry/k8s-examples/product:1.0
         imagePullPolicy: Always
         env:
           - name: DB_HOST
@@ -67,11 +67,3 @@ spec:
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 10
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2048Mi
-          requests:
-            cpu: 250m
-            memory: 512Mi
-
