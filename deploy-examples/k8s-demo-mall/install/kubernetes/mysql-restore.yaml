@@ -13,7 +13,12 @@ spec:
           - bash
           - "-c"
           - |
-            mysql -uroot -pP@ssword1234_ -hmysql-0.mysql --default-character-set=utf8mb4 < /data/dump.sql
+            mysql -uroot -pP@ssword1234_ -h${MYSQL_SERVICE_HOST} --default-character-set=utf8mb4 < /data/dump.sql
+        env:
+        - name: MYSQL_SERVICE_HOST
+          value: mysql.db.svc.cluster.local
+        - name: MYSQL_SERVICE_PORT
+          value: "3306"
       restartPolicy: Never
   backoffLimit: 2
   ttlSecondsAfterFinished: 100
